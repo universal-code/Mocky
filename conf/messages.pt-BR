@@ -1,4 +1,4 @@
-Mocky=Mocky
+Mocky=Mock4Fun
 
 title.home=Mocky: Real HTTP mocking
 presentation.baseline=Teste sua API REST com respostas HTTP reais
@@ -29,3 +29,5 @@ feedback=Dê um feedback!
 overloaded=Mocky está <strong>um pouco sobrecarregado</strong> devido ao lançamento oficial, obrigado por ser paciente. Estamos trabalhando duro para melhorar a qualidade do serviço, uma <strong>nova arquitetura</strong> será lançada em breve!
 
 news.jsonp=Now with <strong>JSONP</strong> support, just add <strong>?callback=myfunction</strong> to your links.
+news1=Para simular delay adicione <strong>?mocky-delay=100ms</strong> no final da url  / max: 60s.
+news2=<strong>CORS</strong> <em>Preflight</em> são aceitos de qualquer origem.

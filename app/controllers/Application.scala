@@ -5,6 +5,7 @@ import scala.concurrent.duration._
 import javax.inject.Inject
 
 import akka.pattern.after
+import play.api.Configuration
 import play.api.http.{ContentTypes, HeaderNames}
 import play.api.i18n.{I18nSupport, Lang}
 import play.api.libs.json._
@@ -14,19 +15,25 @@ import akka.actor.ActorSystem
 import models._
 import services.{IRepository, RepositoryDispatcher}
 
-class Application @Inject()(cc: ControllerComponents, dispatcher: RepositoryDispatcher)
+
+class Application @Inject()(cc: ControllerComponents, dispatcher: RepositoryDispatcher,configuration: Configuration)
     (implicit ec: ExecutionContext, actorSystem: ActorSystem)
     extends AbstractController(cc) with I18nSupport {
 
   private val defaultError = Future(InternalServerError)
 
   def index = Action { implicit req =>
-    val isHttps = req.headers.get(HeaderNames.X_FORWARDED_PROTO).contains("https")
+    val requiredHttps = configuration.get[Boolean]("settings.https.active");
+    if(requiredHttps) 
+    {
+      val isHttps = req.headers.get(HeaderNames.X_FORWARDED_PROTO).contains("https")
 
-    if (isHttps)
-      Ok(views.html.index(Mocker.formMocker))
-    else
-      Redirect("https://www.mocky.io", 301)
+      if (isHttps)
+        Ok(views.html.index(Mocker.formMocker))
+      else
+        Redirect("https://www.mocky.io", 301)
+    }
+    Ok(views.html.index(Mocker.formMocker))
   }
 
   def get(id: String, version: String) = Action.async { implicit request =>
